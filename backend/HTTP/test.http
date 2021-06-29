@@ -1,0 +1,37 @@
+POST http://localhost:9999/auth
+Content-Type: application/json
+
+{
+    "username":"xxx",
+    "password":"aaa"
+}
+###
+GET http://localhost:9999/auth
+Content-Type: application/json
+
+{
+    "username":"xxx",
+    "password":"aaa"
+}
+###
+POST http://localhost:9999/auth/access
+Content-Type: application/json
+
+{
+    "accessToken":"eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJFeHBpcmVBdCI6MTYyNDk4NDQ4OCwiU2VjcmV0IjoiNDFhOTdmODctNTY4Yi00MDI0LWFiYzUtMzViMGNiZjkxMzcwIiwiVXNlcm5hbWUiOiJ4eHgifQ.OSC70rP2V2lg3Uqu4IacLjsB_7X9uKzbNML29VmpBqUnGg3J3owLVRRRBu6eQgAE"
+}
+###
+POST http://localhost:9999/auth/refresh
+Content-Type: application/json
+
+{
+    "refreshToken":"eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJFeHBpcmVBdCI6MTYyNDY5NzcyNCwiU2VjcmV0IjoiODU5MzI3YTQtNjMxMC00NmRmLTg0YzgtZWUzYjg4YmY4MDk4IiwiVXNlcm5hbWUiOiJ4eHgifQ.ZmgP5nlEOyXBSp73gJRDrjdlgVqkfWzRijnIlltUH7Yc4FxSRBXItVg9UO0zRGxJ"
+}
+###
+POST  http://localhost:9999/user
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJFeHBpcmVBdCI6MTYyNDk4NDQ4OCwiU2VjcmV0IjoiNDFhOTdmODctNTY4Yi00MDI0LWFiYzUtMzViMGNiZjkxMzcwIiwiVXNlcm5hbWUiOiJ4eHgifQ.OSC70rP2V2lg3Uqu4IacLjsB_7X9uKzbNML29VmpBqUnGg3J3owLVRRRBu6eQgAE
+
+{
+    "name":"aaaa"
+}
