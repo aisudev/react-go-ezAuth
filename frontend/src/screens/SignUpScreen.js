@@ -32,27 +32,30 @@ export default function SignUpScreen() {
                     <Input
                         placeHolder='enter your username'
                         type='text'
-                        onChange={e=>controller.setUsername(e.target.value)}
+                        onChange={e => controller.setUsername(e.target.value)}
                     />
                 </div>
 
                 <div>
-                    <Input 
+                    <Input
                         placeHolder='enter your name'
                         type='text'
-                        onChange={e=>controller.setName(e.target.value)}
+                        onChange={e => controller.setName(e.target.value)}
                     />
                 </div>
 
                 <div>
-                    <Input 
+                    <Input
                         placeHolder='enter your password'
                         type='password'
-                        onChange={e=>controller.setPassword(e.target.value)}
+                        onChange={e => controller.setPassword(e.target.value)}
                     />
                 </div>
 
-                <Button title='Sign Up' />
+                <Button
+                    title='Sign Up'
+                    onClick={() => controller.SignUp()}
+                />
             </div>
         </div>
     )

@@ -7,7 +7,7 @@ import { useController } from '../controllers/Controller'
 export default function SignInScreen() {
 
     const controller = useController()
-        
+
     return (
         <div
             className='
@@ -29,22 +29,22 @@ export default function SignInScreen() {
                 '
             >
                 <div>
-                    <Input 
+                    <Input
                         placeHolder='username...'
                         type='text'
-                        onChange={e=>controller.setEmail(e.target.value)}
+                        onChange={e => controller.setUsername(e.target.value)}
                     />
                 </div>
 
                 <div>
-                    <Input 
+                    <Input
                         placeHolder='password...'
                         type='password'
-                        onChange={e=>controller.setPassword(e.target.value)}
+                        onChange={e => controller.setPassword(e.target.value)}
                     />
                 </div>
 
-                <Button title='Sign In' />
+                <Button title='Sign In' onClick={() => controller.SignIn()} />
             </div>
         </div>
     )

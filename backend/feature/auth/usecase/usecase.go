@@ -2,7 +2,8 @@ package usecase
 
 import (
 	"react-go-auth/domain"
-	"react-go-auth/middleware"
+	middlewares "react-go-auth/middlewares"
+	"react-go-auth/utils"
 
 	"github.com/gofrs/uuid"
 	"golang.org/x/crypto/bcrypt"
@@ -43,12 +44,12 @@ func (u authUsercase) GetAuth(username, password string) (map[string]interface{}
 	var accessToken string
 	var refreshToken string
 
-	if accessToken, err = middleware.GenerateJWToken(auth.Username, auth.UUID, 1); err != nil {
+	if accessToken, err = middlewares.GenerateJWToken(auth.Username, auth.UUID, 1); err != nil {
 		return nil, err
 	}
 	tokenMap["access_token"] = accessToken
 
-	if refreshToken, err = middleware.GenerateJWToken(auth.Username, auth.Password, 5); err != nil {
+	if refreshToken, err = middlewares.GenerateJWToken(auth.Username, auth.Password, 5); err != nil {
 		return nil, err
 	}
 	tokenMap["refresh_token"] = refreshToken
@@ -62,7 +63,7 @@ func (u authUsercase) GetAuth(username, password string) (map[string]interface{}
 
 func (u authUsercase) VerifyAccessToken(token string) error {
 
-	claim, err := middleware.VerifyJWToken(token)
+	claim, err := middlewares.VerifyJWToken(token)
 
 	if err != nil {
 		return err
@@ -81,40 +82,47 @@ func (u authUsercase) VerifyAccessToken(token string) error {
 
 func (u authUsercase) VerifyRefreshToken(token string) (map[string]interface{}, error) {
 
-	claim, err := middleware.VerifyJWToken(token)
+	claim, err := middlewares.VerifyJWToken(token)
 
 	if err != nil {
+		utils.Log("", err)
 		return nil, err
 	}
 
 	if err := u.repo.IsExist("refresh", token); err != nil {
+		utils.Log("", err)
 		return nil, err
 	}
 
-	if err := u.repo.IsExist("uuid", claim.Secret); err != nil {
-		return nil, err
-	}
+	// if err := u.repo.IsExist("uuid", claim.Secret); err != nil {
+	// 	utils.Log("", err)
+	// 	return nil, err
+	// }
 
 	tokenMap := map[string]interface{}{}
 	var accessToken string
 	var refreshToken string
 	var auth *domain.Auth
 
-	if auth, err = u.repo.GetAuth("uuid", claim.Secret); err != nil {
+	if auth, err = u.repo.GetAuth("username", claim.Username); err != nil {
+		utils.Log("", err)
 		return nil, err
 	}
 
-	if accessToken, err = middleware.GenerateJWToken(auth.Username, auth.UUID, 1); err != nil {
+	if accessToken, err = middlewares.GenerateJWToken(auth.Username, auth.UUID, 1); err != nil {
+		utils.Log("", err)
 		return nil, err
 	}
 	tokenMap["access_token"] = accessToken
 
-	if refreshToken, err = middleware.GenerateJWToken(auth.Username, auth.Password, 5); err != nil {
+	if refreshToken, err = middlewares.GenerateJWToken(auth.Username, auth.Password, 5); err != nil {
+		utils.Log("", err)
 		return nil, err
 	}
 	tokenMap["refresh_token"] = refreshToken
 
 	if err = u.repo.UpdateAuth(auth.UUID, tokenMap); err != nil {
+		utils.Log("", err)
 		return nil, err
 	}
 

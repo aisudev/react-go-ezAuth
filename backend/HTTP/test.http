@@ -6,7 +6,7 @@ Content-Type: application/json
     "password":"aaa"
 }
 ###
-GET http://localhost:9999/auth
+POST http://localhost:9999/auth/signin
 Content-Type: application/json
 
 {

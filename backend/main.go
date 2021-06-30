@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
@@ -9,7 +10,7 @@ import (
 	authDelivery "react-go-auth/feature/auth/delivery"
 	authRepo "react-go-auth/feature/auth/repository"
 	authUsecase "react-go-auth/feature/auth/usecase"
-	"react-go-auth/middleware"
+	middlewares "react-go-auth/middlewares"
 
 	userDelivery "react-go-auth/feature/user/delivery"
 	userRepo "react-go-auth/feature/user/repository"
@@ -29,6 +30,9 @@ func init() {
 func main() {
 	e := echo.New()
 
+	e.Use(middleware.CORS())
+	e.Use(middleware.Recover())
+
 	auth := e.Group("/auth")
 	authDelivery.NewAuthHandler(auth,
 		authUsecase.NewAuthUsecase(
@@ -37,7 +41,7 @@ func main() {
 	)
 
 	user := e.Group("/user")
-	user.Use(middleware.AuthMiddleware(DB))
+	user.Use(middlewares.AuthMiddleware(DB))
 	userDelivery.NewUserHandler(user,
 		userUsecase.NewUserUsecase(
 			userRepo.NewUserRepository(DB),

@@ -32,28 +32,26 @@ func (h *Handler) CreateUserHandler(c echo.Context) error {
 	user.UUID = c.Get("uuid").(string)
 
 	if err := h.usecase.CreateUser(&user); err != nil {
+		utils.Log("", err)
+
 		return c.JSON(http.StatusBadRequest, utils.Response(false, nil, nil, err))
 	}
 
-	return c.JSON(http.StatusBadRequest, utils.Response(true, nil, nil, nil))
+	return c.JSON(http.StatusOK, utils.Response(true, nil, nil, nil))
 
 }
 
 func (h *Handler) GetUserHandler(c echo.Context) error {
 
-	reqMap := map[string]interface{}{}
-
-	if err := c.Bind(&reqMap); err != nil {
-		return c.JSON(http.StatusBadRequest, utils.Response(false, nil, nil, err))
-	}
+	uuid := c.Get("uuid")
 
 	var user *domain.User
 	var err error
 
-	if user, err = h.usecase.GetUser(reqMap["uuid"].(string)); err != nil {
+	if user, err = h.usecase.GetUser(uuid.(string)); err != nil {
 		return c.JSON(http.StatusBadRequest, utils.Response(false, nil, nil, err))
 	}
 
-	return c.JSON(http.StatusBadRequest, utils.Response(true, nil, user, nil))
+	return c.JSON(http.StatusOK, utils.Response(true, nil, user, nil))
 
 }

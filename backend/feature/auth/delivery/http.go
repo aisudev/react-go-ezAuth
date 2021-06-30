@@ -17,7 +17,7 @@ func NewAuthHandler(e *echo.Group, usecase domain.AuthUsecase) *Handler {
 	h := Handler{usecase: usecase}
 
 	e.POST("", h.CreateAuthHandler)
-	e.GET("", h.GetAuthHandler)
+	e.POST("/signin", h.GetAuthHandler)
 
 	e.POST("/refresh", h.RefreshAuthHandler)
 
